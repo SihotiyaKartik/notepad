@@ -2,6 +2,7 @@ package com.notepad;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,6 +12,9 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -34,20 +38,26 @@ public class Main extends JFrame implements ActionListener{
 	JMenuItem feedback;
 	JMenuItem wordwrap;
 	JMenuItem font;
+	JMenuItem about;
 	String text1;
+	ImageIcon image = new ImageIcon("src//notepad.png");
+	Font font1 = new Font("MV Boli",Font.PLAIN,20);
 	
 	Main(){
 		
 		this.setSize(1600,850);
 		this.setTitle("Notepad");
+		this.setIconImage(image.getImage());
 		//this.setLayout(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JMenuBar menuBar = new JMenuBar();
+		menuBar.setBackground(Color.WHITE);
 		
 		
 		///////////////////////////////////////////////////////////////////////////////////////////
 		JMenu file = new JMenu("file");
+		file.setFont(font1);
 		
 		 NEW = new JMenuItem("New");
 		NEW.setAccelerator(KeyStroke.getKeyStroke('N',ActionEvent.CTRL_MASK));
@@ -95,6 +105,7 @@ public class Main extends JFrame implements ActionListener{
 		
 		////////////////////////////////////////////////////////////////////////////////////
 		JMenu edit = new JMenu("edit");
+		edit.setFont(font1);
 		
 		 copy = new JMenuItem("Copy");
 		copy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C,ActionEvent.CTRL_MASK));
@@ -122,6 +133,7 @@ public class Main extends JFrame implements ActionListener{
 		
 		/////////////////////////////////////////////////////////////////////////////////////////
 		JMenu format = new JMenu("format");
+		format.setFont(font1);
 		
 		 wordwrap = new JMenuItem("Word Wrap");
 		//wordwrap.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,ActionEvent.CTRL_MASK));
@@ -139,16 +151,24 @@ public class Main extends JFrame implements ActionListener{
 		
 		//////////////////////////////////////////////////////////////////////////////////////
 		JMenu help = new JMenu("help");
+		help.setFont(font1);
 		
 		 viewhelp = new JMenuItem("view Help");
+		 viewhelp.addActionListener(this);
 		//wordwrap.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,ActionEvent.CTRL_MASK));
 		
 		help.add(viewhelp);
 		
 		 feedback = new JMenuItem("Send Feedback");
+		 feedback.addActionListener(this);
 		//feedback.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,ActionEvent.CTRL_MASK));
 		
 		help.add(feedback);
+		
+		 about = new JMenuItem("About notepad");
+		 about.addActionListener(this);
+		
+		help.add(about); 
 		/////////////////////////////////////////////////////////////////////////////////////
 		
 		menuBar.add(file);
@@ -226,7 +246,7 @@ public class Main extends JFrame implements ActionListener{
 				area.print();
 			}
 			catch(Exception err) {
-				
+				System.out.println("print error");
 			}
 		}
 		else if(e.getSource()==exit) {
@@ -247,7 +267,20 @@ public class Main extends JFrame implements ActionListener{
 		else if(e.getSource() == selectall) {
 			area.selectAll();
 		}
-		
+		else if(e.getSource() == viewhelp) {
+			try {
+				Desktop.getDesktop().browse(new URI("https://www.bing.com/search?q=get+help+with+notepad+in+windows&filters=guid:%224466414-en-dia%22%20lang:%22en%22&form=T00032&ocid=HelpPane-BingIA"));
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (URISyntaxException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		else if(e.getSource()==about) {
+			new aboutNotepad();
+		}
 		else {}
 	}
 
